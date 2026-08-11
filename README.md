@@ -1,5 +1,5 @@
 # Implementasi Keamanan Aplikasi E-Kantin
-## (Framework Derivasi Attack Tree dari Use Case Diagram
+## Framework Derivasi Attack Tree dari Use Case Diagram
 
 Mengimplementasikan sembilan Security Requirement (SR-01
 s.d. SR-09) hasil derivasi Attack Tree pada paper, ke dalam basis kode

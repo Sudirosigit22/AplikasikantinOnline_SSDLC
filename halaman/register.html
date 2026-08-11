@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Akun</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background-color: #3b82f6;
+      padding: 15px 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header h1 {
+      font-size: 36px;
+      font-weight: 600;
+      color: white;
+      margin: 0;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      min-height: calc(100vh - 84px);
+    }
+
+    .register-box {
+      width: 100%;
+      max-width: 400px;
+      background-color: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .register-box h3 {
+      text-align: center;
+      font-size: 21px;
+      margin-bottom: 24px;
+      color: #374151;
+    }
+
+    .register-box label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .register-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .register-box input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .register-box button {
+      width: 100%;
+      padding: 12px;
+      background-color: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-bottom: 16px;
+    }
+
+    .register-box button:hover {
+      background-color: #2563eb;
+    }
+
+    .register-box button:active {
+      transform: translateY(1px);
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .success {
+      color: green;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    #loginButton {
+      margin-top: 16px;
+      margin-bottom: 10px;
+      width: fit-content; 
+      background: none;
+      border: none;
+      color: #2563eb; 
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #loginButton:hover {
+      color: #1d4ed8; 
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 14px 18px;
+      }
+
+      .header h1 {
+        font-size: 30px;
+      }
+      
+      .register-box {
+        padding: 20px;
+      }
+      
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 10px 14px;
+      }
+      .container {
+        padding: 16px;
+      }
+
+      .header h1 {
+        font-size: 26px;
+      }
+      
+      .register-box {
+        padding: 16px;
+      } 
+    }
+
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      select, textarea, input[type="text"], input[type="password"] {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Kantin</h1>
+  </div>
+
+  <div class="container">
+    <div class="register-box">
+      <h3>Register Kantin</h3>
+      <form onsubmit="register(event)" autocomplete="off">
+        <label for="username">NPM:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <label for="confirmPassword">Ulangi Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        
+        <button type="submit">REGISTER</button>
+        <div id="hasil"></div>
+      </form>
+
+      <button id="loginButton" onclick="sessionStorage.removeItem('lastPage'); window.location.href='/';">← Kembali ke Login</button>
+    </div>
+  </div>
+
+  <script>
+    function register(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const hasil = document.getElementById("hasil");
+
+      if (password !== confirmPassword) {
+        hasil.textContent = "Password dan konfirmasi tidak cocok.";
+        hasil.className = "error";
+        del();
+        return;
+      }
+
+      fetch("halaman/register.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+      })
+      .then(res => res.text())
+      .then(teks => {
+        hasil.textContent = teks;
+        if (teks.toLowerCase().includes("berhasil")) {
+          hasil.className = "success";
+          hasil.style.display = 'block';
+          document.querySelector('input[name="password"]').value = ''; 
+          document.querySelector('input[name="username"]').value = '';
+          document.querySelector('input[name="confirmPassword"]').value = ''; 
+        } else {
+          hasil.className = "error";
+          del();
+        }
+      })
+      .catch(() => {
+        hasil.textContent = "Gagal menghubungkan ke server.";
+        hasil.className = "error";
+      });
+    }
+    function del(){
+        hasil.style.display = 'block';
+        document.querySelector('input[name="password"]').value = ''; 
+        document.querySelector('input[name="username"]').value = '';
+        document.querySelector('input[name="confirmPassword"]').value = ''; 
+        setTimeout(() => hasil.style.display = 'none', 5000);
+    } 
+  </script>
+</body>
+</html>

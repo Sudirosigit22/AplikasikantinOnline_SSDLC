@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>App Kantin</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9fafb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #app {
+      font-size: 1.7em;
+      font-weight: 600;
+      color: #10b981;
+      position: relative;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .typing::after {
+      content: '|';
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .dot-animate::after {
+      content: '';
+      display: inline-block;
+      animation: dots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes dots {
+      0%   { content: ''; }
+      25%  { content: '.'; }
+      50%  { content: '..'; }
+      75%  { content: '...'; }
+      100% { content: ''; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="typing">Memuat halaman<span class="dot-animate"></span></div>
+
+  <script>
+    function loadHalaman(url) {
+    fetch("loader.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "file=" + encodeURIComponent(url)
+    })
+    .then(res => res.text())
+    .then(html => {
+      history.replaceState({}, "", "/"); 
+      document.open();
+      document.write(html);
+      document.close();
+    })
+  .catch(err => {
+    console.error("Gagal memuat halaman:", err);
+    alert("Gagal memuat halaman.");
+  });
+  }
+
+    window.onload = function () {
+      const username = sessionStorage.getItem("username");
+      const last = sessionStorage.getItem("lastPage");
+      if (!username && !last) {
+        loadHalaman("login.html");
+      } else if (last && window.location.pathname.endsWith('/')) {
+        loadHalaman(last);
+      }
+    };
+
+  </script>
+</body>
+</html>

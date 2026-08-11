@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout - Kantin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f3f4f6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .checkout-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    
+    h2 {
+      text-align: center;
+      color: #3b82f6;
+      margin-bottom: 24px;
+      font-size: 24px;
+    }
+    
+    label {
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    
+    input[readonly] {
+      background-color: #f9fafb;
+      cursor: not-allowed;
+    }
+    
+    .order-summary {
+      margin-top: 16px;
+      background: #f9fafb;
+      padding: 16px;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 14px;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 4px 0;
+    }
+    
+    .order-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .order-item-name {
+      flex: 1;
+      font-weight: 500;
+      margin-right: 8px;
+    }
+    
+    .order-item-qty {
+      color: #6b7280;
+      margin-right: 8px;
+      font-size: 13px;
+    }
+    
+    .order-item-price {
+      font-weight: 600;
+      color: #111827;
+    }
+    
+    .order-total {
+      font-weight: 700;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 2px solid #e5e7eb;
+      font-size: 18px;
+      text-align: right;
+      color: #111827;
+    }
+    
+    .submit-btn {
+      margin-top: 24px;
+      width: 100%;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+    
+    .submit-btn:hover {
+      background-color: #2563eb;
+    }
+    
+    .submit-btn:active {
+      transform: translateY(1px);
+    }
+    
+    .empty-msg {
+      text-align: center;
+      color: #9ca3af;
+      padding: 40px 0;
+      font-style: italic;
+    }
+    
+    .shipping-cost {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 8px;
+      text-align: right;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .required {
+      color: #ef4444;
+    }
+
+.back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: none;   
+  border: none;      
+  cursor: pointer;
+  font-size: 28px;    
+  line-height: 1;
+  padding: 0;
+}
+
+.back-btn:active {
+  transform: scale(0.95);
+}
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .checkout-container {
+        margin: 16px;
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+      
+      label {
+        font-size: 13px;
+      }
+      
+      input, textarea, select {
+        padding: 10px;
+        font-size: 13px;
+      }
+      
+      .order-summary {
+        padding: 12px;
+        max-height: 150px;
+      }
+      
+      .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      
+      .order-item-details {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+      
+      .order-total {
+        font-size: 16px;
+      }
+      
+      .submit-btn {
+        padding: 12px;
+        font-size: 15px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .checkout-container {
+        margin: 12px;
+        padding: 16px;
+      }
+      
+      h2 {
+        font-size: 18px;
+      }
+      
+      input, textarea, select {
+        padding: 8px;
+        font-size: 12px;
+      }
+      
+      .order-summary {
+        padding: 10px;
+        font-size: 12px;
+      }
+      
+      .order-total {
+        font-size: 14px;
+      }
+      
+      .submit-btn {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+    
+    /* Touch-friendly improvements */
+    @media (hover: none) and (pointer: coarse) {
+      input, textarea, select {
+        padding: 14px;
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+      
+      .submit-btn {
+        padding: 16px;
+        font-size: 16px;
+      }
+    }
+    
+    /* Accessibility improvements */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="checkout-container">
+  <button class="back-btn" onclick="sessionStorage.setItem('lastPage', 'etalase.html');location.href='/';">⬅️</button>
+  <h2>Checkout Kantin</h2>
+  <form id="checkoutForm" onsubmit="submitOrder(event)" autocomplete="off">
+    <div class="form-group">
+      <label for="orderSummary">Daftar Pesanan</label>
+      <div id="orderSummary" class="order-summary">
+        <p class="empty-msg">Memuat keranjang...</p>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="name">Nama <span class="required">*</span></label>
+      <input type="text" id="name" name="name" placeholder="Nama Panggilan/nama depan" required />
+    </div>
+
+    <div class="form-group">
+      <label for="kelas">Kelas <span class="required"></span></label>
+	  <input type="text" id="kelas" name="kelas" readonly required />
+    </div>
+
+    <div class="form-group">
+      <label for="pesan">Pesan</label>
+      <textarea id="pesan" name="pesan" placeholder="Pesan untuk penjual (Opsional)"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="total">Total Harga (Rp) <span class="required"></span></label>
+      <input type="number" id="total" name="total" readonly required />
+    </div>
+
+    <div class="form-group">
+      <label for="payment">Metode Pembayaran <span class="required">*</span></label>
+      <select id="payment" name="payment" required>
+        <option value="">Pilih Metode</option>
+        <option value="transfer">Transfer</option>
+        <option value="cash">Cash</option>
+      </select>
+    </div>
+
+    <button type="submit" class="submit-btn">Kirim Pesanan</button>
+  </form>
+</div>
+<script>
+  const username = JSON.parse(sessionStorage.getItem("username"));
+  const akun = JSON.parse(sessionStorage.getItem("akun"));
+
+  if (!username){
+    document.body.innerHTML = "<h2 style='text-align:center; margin-top:20%; color:red;'>Akses ditolak! Silakan login Kembali!</h2>";
+    setTimeout(() => {
+        window.location.href = "/";
+        }, 3000);
+  }
+  let totalBarang = 0;
+
+  document.addEventListener("DOMContentLoaded", () => {
+      const kelas = JSON.parse(sessionStorage.getItem("kelas"));
+      const orderSummary = document.getElementById('orderSummary');
+      const totalInput = document.getElementById('total');
+      document.getElementById("kelas").value = kelas;
+      const cartData = sessionStorage.getItem('cartCheckout');
+      let totalBarang = 0;
+
+      if (!cartData) {
+        orderSummary.innerHTML = '<p class="empty-msg">Keranjang kosong. Silakan kembali ke halaman utama.</p>';
+        totalInput.value = 0;
+        return;
+      }
+
+      const cart = JSON.parse(cartData);
+      if (cart.length === 0) {
+        orderSummary.innerHTML = '<p class="empty-msg">Keranjang kosong. Silakan kembali ke halaman utama.</p>';
+        totalInput.value = 0;
+        return;
+      }
+
+      orderSummary.innerHTML = '';
+      cart.forEach(item => {
+        const subtotal = item.price * item.qty;
+        totalBarang += subtotal;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'order-item';
+        itemDiv.innerHTML = `<div>${item.name} (x${item.qty})</div><div>Rp ${subtotal.toLocaleString()}</div>`;
+        orderSummary.appendChild(itemDiv);
+      });
+
+      const totalDiv = document.createElement('div');
+      totalDiv.className = 'order-total';
+      totalDiv.textContent = `Total Pesanan: Rp ${totalBarang.toLocaleString()}`;
+      orderSummary.appendChild(totalDiv);
+
+      totalInput.value = totalBarang;
+  });
+
+  function submitOrder(event) {
+    event.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const pesan = document.getElementById('pesan').value.trim();
+    const payment = document.getElementById('payment').value;
+    const total = document.getElementById('total').value;
+    const kelas = document.getElementById('kelas').value;
+    const paymentText = {
+      transfer: "Transfer",
+      cash: "Cash",
+    }[payment];
+
+    if (!name || !payment ) {
+      alert('Mohon isi semua data dengan lengkap');
+      return;
+    }
+    const cart = JSON.parse(sessionStorage.getItem('cartCheckout') || '[]');
+  if (confirm("Apakah Anda yakin ingin mengirim Pesanan? Pesanan tidak dapat diubah setelah dikirim!")) {
+  fetch("halaman/checkout.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name,
+      pesan,
+      paymentText,
+      kelas,
+      total,
+      items: cart,
+      username,
+      akun,
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.status === "success") {
+      sessionStorage.clear();
+      alert("Pesanan berhasil dikirim.");
+      setTimeout(() => {
+        sessionStorage.setItem('lastPage', 'final.html');
+        location.href='/';
+        }, 100);
+    } else {
+      alert("Gagal menyimpan pesanan.");
+    }
+  })
+  .catch(() => alert("Terjadi kesalahan jaringan."));
+  } else {
+      return false;
+  }
+  }
+
+</script>
+
+</body>
+</html>

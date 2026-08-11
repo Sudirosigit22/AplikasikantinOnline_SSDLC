@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Kantin</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8fafc;
+      padding: 10px;
+      margin: 0;
+      font-size: 14px;
+    }
+    .container {
+      max-width: none;
+      margin: auto;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .top-bar h2 {
+      margin: 0;
+      color: #333;
+      font-size: 1.5em;
+    }
+    .table-container {
+      overflow-y: auto;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 10px;
+      cursor: grab;
+      user-select: none;
+    }
+    .table-container.active {
+      cursor: grabbing;
+      cursor: -webkit-grabbing;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+      background: #fff;
+    }
+    th, td {
+      padding: 8px 6px;
+      border: 1px solid #ddd;
+      text-align: left;
+      vertical-align: top;
+      white-space: nowrap;
+    }
+    th {
+      background: #007bff;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9em;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    td {
+      font-size: 0.85em;
+      word-break: break-word;
+    }
+    tr:hover {
+      background-color: #f1f3f4;
+    }
+    
+    .back-button {
+      color: white;
+      border: none;
+      background-color: #007bff;
+      font-weight: 600;
+      font-size: 0.95em;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      margin-right: 15px;
+      margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+      background-color: #e6f0ff;
+      color: #0056b3;
+    }
+    @media screen and (max-width: 768px) {
+      body { padding: 5px; font-size: 12px; }
+      .container { padding: 10px; border-radius: 4px; }
+      .top-bar h2 { font-size: 1.3em; }
+      th, td { padding: 6px 4px; font-size: 0.8em; }
+      th { font-size: 0.85em; }
+      table { min-width: 700px; }
+    }
+    @media screen and (max-width: 480px) {
+      body { padding: 2px; font-size: 11px; }
+      .container { padding: 8px; margin: 2px; }
+      .top-bar h2 { font-size: 1.2em; }
+      th, td { padding: 4px 3px; font-size: 0.75em; }
+      table { min-width: 600px; }
+      .back-button {font-size: 0.85em;padding: 4px 8px;margin-bottom: 5px;}
+    }
+    .table-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .table-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    .table-container::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    @media (hover: none) and (pointer: coarse) {
+      th, td { padding: 10px 8px; }
+      tr:active { background-color: #e3f2fd; }
+    }
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+    .no-data {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button onclick="sessionStorage.setItem('lastPage', 'login.html');location.href='/';" class="back-button">← Kembali</button>
+    <div class="top-bar">
+      <h2>Data Pesanan</h2>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Kelas</th>
+            <th>Pesanan</th>
+            <th>Pesan</th>
+            <th>Total</th>
+            <th>Pembayaran</th>
+            <th>Status Bayar</th>
+            <th>Status Kas</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-body">
+          <tr><td colspan="9" class="loading">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    fetch("halaman/datakantin.php")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("tabel-body").innerHTML = html;
+      });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const container = document.querySelector('.table-container');
+      let isDown = false;
+      let startX, startY;
+      let scrollLeft, scrollTop;
+
+      container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        container.classList.add('active');
+        startX = e.pageX - container.offsetLeft;
+        startY = e.pageY - container.offsetTop;
+        scrollLeft = container.scrollLeft;
+        scrollTop = container.scrollTop;
+      });
+
+      container.addEventListener('mouseleave', () => {
+        isDown = false;
+        container.classList.remove('active');
+      });
+
+      container.addEventListener('mouseup', () => {
+        isDown = false;
+        container.classList.remove('active');
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const y = e.pageY - container.offsetTop;
+        const walkX = (x - startX) * 1; 
+        const walkY = (y - startY) * 1; 
+        container.scrollLeft = scrollLeft - walkX;
+        container.scrollTop = scrollTop - walkY;
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const tableContainer = document.querySelector('.table-container');
+      if (window.innerWidth <= 768 && tableContainer) {
+        const scrollHint = document.createElement('div');
+        scrollHint.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: rgba(0,123,255,0.9);
+          color: white;
+          padding: 8px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          z-index: 1000;
+          transition: opacity 0.3s;
+          pointer-events: none;
+        `;
+        scrollHint.textContent = '← Geser untuk melihat lebih →';
+        document.body.appendChild(scrollHint);
+
+        setTimeout(() => {
+          scrollHint.style.opacity = '0';
+          setTimeout(() => scrollHint.remove(), 300);
+        }, 3000);
+
+        tableContainer.addEventListener('scroll', function() {
+          scrollHint.style.opacity = '0';
+          setTimeout(() => scrollHint.remove(), 300);
+        }, { once: true });
+      }
+    });
+
+    document.addEventListener('contextmenu', function(e) {
+      const table = document.querySelector('.table-container');
+      if (table && table.contains(e.target)) {
+        e.preventDefault(); 
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      const table = document.querySelector('.table-container');
+      if (e.ctrlKey && e.key === 'c' && document.activeElement.closest('.table-container')) {
+        e.preventDefault(); 
+      }
+    });
+
+  </script>
+</body>
+</html>

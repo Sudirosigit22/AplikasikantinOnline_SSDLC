@@ -30,31 +30,10 @@ Bagian V.C paper. Backdoor ini **sudah dihapus total** (kode maupun file
 | SR-08 | TLS + hashing password | HTTPS dipaksa, cookie sesi Secure/HttpOnly/SameSite, bcrypt dipertahankan | `.htaccess`, `includes/security.php` |
 | SR-09 | Logging & monitoring | Tabel `security_log`: login gagal/sukses, lockout, checkout, pembatalan | `includes/security.php` (dipanggil lintas modul) |
 
-## 2. Langkah Deploy
 
-1. **Backup database** sebelum migrasi.
-2. Jalankan `sql/migration_security.sql` pada basis data (hanya
-   menambah kolom/tabel baru, tidak mengubah data eksisting).
-3. Upload seluruh isi folder aplikasi (menimpa berkas lama) — termasuk
-   folder baru `halaman/includes/`.
-4. Pastikan `halaman/password2.txt` **tidak ada lagi** di server produksi
-   (hapus manual jika hosting tidak menimpa penghapusan file lama saat upload).
-5. Isi kolom `akun.email` untuk pengguna yang ingin memakai fitur lupa
-   password (opsional; tanpa email, permintaan reset akan ditolak secara
-   aman, bukan gagal secara tidak terduga).
-6. Verifikasi HTTPS aktif di hosting sebelum mengandalkan pemaksaan HTTPS
-   pada `.htaccess` (baris redirect bisa menyebabkan redirect loop jika
-   TLS belum terpasang di sisi hosting — nonaktifkan sementara bila perlu).
-7. (Opsional, disarankan) konfigurasi SMTP asli untuk pengiriman email
-   reset password; saat ini menggunakan `mail()` bawaan PHP sebagai
-   referensi awal.
+## 2. Keterbatasan
 
-## 3. Keterbatasan yang Perlu Diketahui
-
-- Verifikasi dilakukan melalui **code review statis** (konsisten dengan
-  Bagian V.D paper), belum mencakup dynamic application security testing
+- Verifikasi dilakukan melalui **code review statis**, belum mencakup dynamic application security testing
   (DAST) maupun expert review.
 - Kolom `email` bersifat opsional/baru sehingga fitur reset password hanya
   aktif untuk akun yang sudah mengisi email.
-- Modul manajemen menu & pelaporan (`datakantin.php`, `etalase.php` sisi
-  admin) berada di luar cakupan paper (Bagian I.C) sehingga tidak disentuh.

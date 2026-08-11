@@ -6,7 +6,7 @@
 
 ## 1. Perkenalan
 
-**E-Kantin** adalah aplikasi web pemesanan makanan di kantin sekolah yang dirancang untuk memudahkan siswa/siswi melakukan pemesanan secara digital. Versi **Secure** ini merupakan hasil implementasi persyaratan keamanan (Security Requirements) yang diturunkan dari **Attack Tree** berdasarkan Use Case Diagram, mengikuti kerangka kerja **SSDLC (Secure Software Development Life Cycle)**.
+**E-Kantin** adalah aplikasi web pemesanan makanan di kantin sekolah yang dirancang untuk memudahkan taruna melakukan pemesanan secara digital. Versi **Secure** ini merupakan hasil implementasi persyaratan keamanan (Security Requirements) yang diturunkan dari **Attack Tree** berdasarkan Use Case Diagram, mengikuti kerangka kerja **SSDLC (Secure Software Development Life Cycle)**.
 
 Aplikasi ini mempertahankan seluruh fitur dan alur bisnis asli, sambil menambahkan lapisan kontrol keamanan di backend. Perubahan utama mencakup penghapusan backdoor autentikasi, penguatan sesi, rate limiting, validasi server-side, dan mekanisme logging keamanan.
 

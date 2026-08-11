@@ -1,7 +1,7 @@
 # Implementasi Keamanan Aplikasi E-Kantin
-## Berdasarkan Paper SSDLC (Framework Derivasi Attack Tree dari Use Case Diagram)
+## (Framework Derivasi Attack Tree dari Use Case Diagram
 
-Dokumen ini merangkum implementasi kesembilan Security Requirement (SR-01
+Mengimplementasikan sembilan Security Requirement (SR-01
 s.d. SR-09) hasil derivasi Attack Tree pada paper, ke dalam basis kode
 aplikasi E-Kantin. **Tidak ada fitur, tampilan, atau alur bisnis yang
 dihapus/diubah** — seluruh perubahan bersifat menambahkan kontrol keamanan

@@ -11,7 +11,7 @@
 Aplikasi ini mempertahankan seluruh fitur dan alur bisnis asli, sambil menambahkan lapisan kontrol keamanan di backend. Perubahan utama mencakup penghapusan backdoor autentikasi, penguatan sesi, rate limiting, validasi server-side, dan mekanisme logging keamanan.
 
 Proyek ini cocok digunakan sebagai:
-- Sistem pemesanan kantin di lingkungan sekolah/kampus
+- Sistem pemesanan kantin di lingkungan kampus
 - Studi kasus implementasi keamanan web (SSDLC, Attack Tree, OWASP-related controls)
 - Referensi praktis penerapan SR (Security Requirements) pada aplikasi PHP + MySQL
 
@@ -19,7 +19,7 @@ Proyek ini cocok digunakan sebagai:
 
 ## 2. Fungsi Utama
 
-E-Kantin memungkinkan pengguna (siswa) untuk:
+E-Kantin memungkinkan pengguna untuk:
 
 1. **Mendaftar / Membuat Password** — Mengaktifkan akun menggunakan NPM yang sudah terdaftar di sistem.
 2. **Login** — Mengakses aplikasi dengan NPM dan password.
